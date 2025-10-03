@@ -1,6 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { MessagePattern } from '@nestjs/microservices'
+import { MessagePattern, Payload } from '@nestjs/microservices'
+import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginUserDto } from './dto';
 
 @Controller()
 export class AuthController {
@@ -10,18 +12,18 @@ export class AuthController {
   está suscribiendose a {cmd:'auth.register.user}
   */
   @MessagePattern({cmd:'auth.register.user'})
-  register(){
-    return 'Registrado'
+  register(@Payload() registerUserDto: RegisterUserDto){
+    return this.authService.registerUser(registerUserDto);
   }
 
   @MessagePattern({cmd:'auth.login.user'})
-  login(){
-    return 'Login'
+  login(@Payload() loginUserDto: LoginUserDto){
+    return this.authService.loginUser(loginUserDto);
   }
 
   @MessagePattern({cmd:'auth.verify.user'})
-  verify(){
-    return 'Verify'
+  verify(@Payload() token: string){
+    return this.authService.verifyToken(token)
   }
 }
 

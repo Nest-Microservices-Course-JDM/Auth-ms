@@ -17,6 +17,13 @@ async function bootstrap() {
       }
     }
   );
+
+  app.useGlobalPipes(  
+    new ValidationPipe({ 
+      whitelist: true, 
+      forbidNonWhitelisted: true, 
+    }) 
+  );
   
   await app.listen();
   logger.log(`Auth Microservice running on port ${envs.port}`)
